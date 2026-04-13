@@ -4,7 +4,12 @@ import joblib
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 
-MODEL_PATH = os.path.join(os.path.dirname(__file__), 'model.pkl')
+BASE_DIR = os.path.dirname(__file__)
+MODEL_PATH = os.path.join(BASE_DIR, 'model.pkl')
+DATA_DIR = os.path.join(BASE_DIR, 'data')
+FULL_PATH = os.path.join(DATA_DIR, 'full_data.csv')
+TRAIN_PATH = os.path.join(DATA_DIR, 'train_data.csv')
+TEST_PATH = os.path.join(DATA_DIR, 'test_data.csv')
 
 def _grade(score):
     if score >= 75: return 'A'
@@ -25,7 +30,17 @@ def _synthetic_data():
     avg_internal = np.random.normal(65, 18, n).clip(20, 100)
     assignment = np.random.normal(68, 16, n).clip(20, 100)
     score = (attendance * 0.35 + avg_internal * 0.40 + assignment * 0.25 + np.random.normal(0, 5, n)).clip(0, 100)
-    return np.column_stack([attendance, avg_internal, assignment]), score
+    X = np.column_stack([attendance, avg_internal, assignment])
+    os.makedirs(DATA_DIR, exist_ok=True)
+    data = np.column_stack([X, score])
+    np.savetxt(FULL_PATH, data, delimiter=',')
+    idx = np.arange(len(data))
+    np.random.shuffle(idx)
+    split = int(len(data) * 0.8)
+    train_idx, test_idx = idx[:split], idx[split:]
+    np.savetxt(TRAIN_PATH, data[train_idx], delimiter=',')
+    np.savetxt(TEST_PATH, data[test_idx], delimiter=',')
+    return X, score
 
 def train(samples=None):
     if samples and len(samples) >= 20:
