@@ -23,6 +23,17 @@ def _risk(score):
     if score >= 45: return 'medium'
     return 'high'
 
+def _save_splits(data):
+    os.makedirs(DATA_DIR, exist_ok=True)
+    np.savetxt(FULL_PATH, data, delimiter=',')
+    idx = np.arange(len(data))
+    np.random.shuffle(idx)
+    split = int(len(data) * 0.8)
+    train_idx, test_idx = idx[:split], idx[split:]
+    np.savetxt(TRAIN_PATH, data[train_idx], delimiter=',')
+    np.savetxt(TEST_PATH, data[test_idx], delimiter=',')
+    return train_idx, test_idx
+
 def _synthetic_data():
     np.random.seed(42)
     n = 200
@@ -31,21 +42,16 @@ def _synthetic_data():
     assignment = np.random.normal(68, 16, n).clip(20, 100)
     score = (attendance * 0.35 + avg_internal * 0.40 + assignment * 0.25 + np.random.normal(0, 5, n)).clip(0, 100)
     X = np.column_stack([attendance, avg_internal, assignment])
-    os.makedirs(DATA_DIR, exist_ok=True)
     data = np.column_stack([X, score])
-    np.savetxt(FULL_PATH, data, delimiter=',')
-    idx = np.arange(len(data))
-    np.random.shuffle(idx)
-    split = int(len(data) * 0.8)
-    train_idx, test_idx = idx[:split], idx[split:]
-    np.savetxt(TRAIN_PATH, data[train_idx], delimiter=',')
-    np.savetxt(TEST_PATH, data[test_idx], delimiter=',')
+    _save_splits(data)
     return X, score
 
 def train(samples=None):
     if samples and len(samples) >= 20:
         X = np.array([[s['attendance'], s['avg_internal'], s['assignment_score']] for s in samples])
         y = np.array([s['final_score'] for s in samples])
+        data = np.column_stack([X, y])
+        _save_splits(data)
         model = RandomForestRegressor(n_estimators=100, random_state=42)
     else:
         X, y = _synthetic_data()
@@ -54,7 +60,14 @@ def train(samples=None):
             yr = np.array([s['final_score'] for s in samples])
             X = np.vstack([X, Xr])
             y = np.concatenate([y, yr])
+            data = np.column_stack([X, y])
+            _save_splits(data)
         model = RandomForestRegressor(n_estimators=100, random_state=42) if len(samples or []) >= 5 else LinearRegression()
+    if os.path.exists(TRAIN_PATH):
+        train_data = np.loadtxt(TRAIN_PATH, delimiter=',')
+        if len(train_data) > 0:
+            X = train_data[:, :3]
+            y = train_data[:, 3]
     model.fit(X, y)
     joblib.dump(model, MODEL_PATH)
     return model
@@ -70,3 +83,19 @@ def predict(attendance, avg_internal, assignment_score):
     raw = float(model.predict(X)[0])
     score = round(max(0, min(100, raw)), 2)
     return {'score': score, 'grade': _grade(score), 'risk': _risk(score)}
+
+def get_viz_data():
+    result = {'train': [], 'test': [], 'full': []}
+    if os.path.exists(TRAIN_PATH):
+        d = np.loadtxt(TRAIN_PATH, delimiter=',')
+        if d.ndim == 1: d = d.reshape(1, -1)
+        result['train'] = [{'attendance': float(r[0]), 'avg_internal': float(r[1]), 'assignment_score': float(r[2]), 'score': float(r[3])} for r in d]
+    if os.path.exists(TEST_PATH):
+        d = np.loadtxt(TEST_PATH, delimiter=',')
+        if d.ndim == 1: d = d.reshape(1, -1)
+        result['test'] = [{'attendance': float(r[0]), 'avg_internal': float(r[1]), 'assignment_score': float(r[2]), 'score': float(r[3])} for r in d]
+    if os.path.exists(FULL_PATH):
+        d = np.loadtxt(FULL_PATH, delimiter=',')
+        if d.ndim == 1: d = d.reshape(1, -1)
+        result['full'] = [{'attendance': float(r[0]), 'avg_internal': float(r[1]), 'assignment_score': float(r[2]), 'score': float(r[3])} for r in d]
+    return result

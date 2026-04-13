@@ -64,3 +64,11 @@ def train_model():
     samples = [{'attendance': p['attendance'], 'avg_internal': p.get('avg_internal', 0), 'assignment_score': p.get('assignmentScore', 0), 'final_score': p['score']} for p in all_preds]
     predictor.train(samples)
     return ok({'trained': True, 'samples': len(samples)})
+
+@admin_bp.route('/viz-data', methods=['GET'])
+@admin_required
+def viz_data():
+    data = predictor.get_viz_data()
+    all_preds = list(predictions.find({}, {'attendance': 1, 'avg_internal': 1, 'assignmentScore': 1, 'score': 1, 'grade': 1, 'risk': 1, 'studentName': 1}))
+    prediction_points = [{'attendance': p['attendance'], 'avg_internal': p.get('avg_internal', 0), 'assignment_score': p.get('assignmentScore', 0), 'score': p['score'], 'grade': p['grade'], 'risk': p['risk'], 'name': p.get('studentName', '')} for p in all_preds]
+    return ok({**data, 'predictions': prediction_points})

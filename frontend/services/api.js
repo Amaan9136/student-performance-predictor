@@ -30,4 +30,5 @@ export const adminAPI = {
   users: (q) => API.get(`/admin/users${q ? `?q=${q}` : ''}`),
   trainModel: () => API.post('/admin/train'),
   deleteStudent: (id) => API.delete(`/admin/students/${id}`),
+  vizData: () => API.get('/admin/viz-data'),
 }

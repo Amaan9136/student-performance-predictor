@@ -41,7 +41,7 @@ export default function LoginPage() {
             <label className="label">Account Name</label>
             <div className="relative">
               <FiUser size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-              <input className="input pl-9" placeholder="your_account" value={form.accountName} onChange={set('accountName')} onKeyDown={e => e.key === 'Enter' && submit()} />
+              <input className="input pl-9" placeholder="Enter name" value={form.accountName} onChange={set('accountName')} onKeyDown={e => e.key === 'Enter' && submit()} />
             </div>
           </div>
           <div>

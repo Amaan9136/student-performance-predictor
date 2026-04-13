@@ -45,7 +45,7 @@ npm run dev
 ## Ollama Setup (AI Advice)
 ```bash
 # Install Ollama from https://ollama.ai
-ollama pull llama3.2
+ollama pull mistral-large-3:675b-cloud
 # Ollama runs at http://localhost:11434 by default
 ```
 
@@ -101,7 +101,7 @@ JWT_SECRET=changethisinproduction
 JWT_EXPIRY=86400
 PROJECT_MODE=development
 OLLAMA_HOST=http://localhost:11434
-OLLAMA_MODEL=llama3.2
+OLLAMA_MODEL=mistral-large-3:675b-cloud
 PORT=5000
 ```
 
