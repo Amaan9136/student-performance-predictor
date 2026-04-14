@@ -1,1 +1,18 @@
 add columns to the all the files in the /data
+improve ui, remove the mobile responsive type and make it desktop site type
+add side bar instead of bottom bar
+update complete frontend layout to improve ui ux to desktop
+do not change any existing functionality. should function same
+
+remaining changes:
+For each page — change these patterns:
+page-container class stays (now it's full-width in new CSS)
+grid grid-cols-2 → grid grid-cols-4 (stat cards) or keep as grid-cols-2 for forms
+Students page — add columns: Attendance, Avg Internal, Assignment Score, Grade, Risk to table
+Admin Students page — already has a table; add Assignment Score column
+Predict page — convert card list to table with columns: Name, Roll, Subject, Score, Grade, Risk
+Reports page — add wider grid: grid-cols-4
+Profile page — use a two-column info layout
+Students [id] page — use side-by-side layout for stats + prediction
+app/auth/login/page.js and register/page.js — center card, no sidebar (auth routes are excluded)
+The key insight: since SideNav returns null on /auth/* and /admin/* routes, and AppLayout adds main-with-sidebar margin, the layout is automatically correct for all faculty pages.
