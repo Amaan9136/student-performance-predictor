@@ -1,12 +1,10 @@
 'use client'
-
 export function Spinner({ size = 'md', className = '' }) {
   const s = size === 'sm' ? 'w-4 h-4' : size === 'lg' ? 'w-8 h-8' : 'w-6 h-6'
   return (
     <div className={`${s} border-2 border-slate-700 border-t-blue-500 rounded-full animate-spin ${className}`} />
   )
 }
-
 export function PageLoader() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-950">
@@ -17,7 +15,6 @@ export function PageLoader() {
     </div>
   )
 }
-
 export function Empty({ message = 'No data found', icon = null }) {
   return (
     <div className="flex flex-col items-center justify-center py-12 gap-3">
@@ -26,7 +23,6 @@ export function Empty({ message = 'No data found', icon = null }) {
     </div>
   )
 }
-
 export function Badge({ type = 'info', children }) {
   const cls = {
     success: 'badge-success',
@@ -44,7 +40,6 @@ export function Badge({ type = 'info', children }) {
   }
   return <span className={cls[type] || 'badge-info'}>{children}</span>
 }
-
 export function Modal({ open, onClose, title, children }) {
   if (!open) return null
   return (
@@ -62,7 +57,6 @@ export function Modal({ open, onClose, title, children }) {
     </div>
   )
 }
-
 export function StatCard({ label, value, sub, accent = 'blue', icon }) {
   const accents = {
     blue: 'text-blue-400',

@@ -6,7 +6,6 @@ import toast from 'react-hot-toast'
 import { FiUser, FiLock, FiBook, FiCpu } from 'react-icons/fi'
 import useAuthStore from '@/stores/authStore'
 import { Spinner } from '@/components/ui'
-
 export default function RegisterPage() {
   const [form, setForm] = useState({ accountName: '', subject: '', password: '', confirmPassword: '' })
   const [loading, setLoading] = useState(false)

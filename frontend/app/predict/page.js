@@ -7,19 +7,15 @@ import usePredictionStore from '@/stores/predictionStore'
 import AppLayout from '@/components/layout/AppLayout'
 import PageHeader from '@/components/layout/PageHeader'
 import { Spinner, Badge } from '@/components/ui'
-
 function PredictContent() {
   const { students, fetchStudents } = useStudentStore()
   const { predict } = usePredictionStore()
   const [running, setRunning] = useState(false)
   const [results, setResults] = useState([])
   const [progress, setProgress] = useState({ done: 0, total: 0 })
-
   useEffect(() => { fetchStudents() }, [])
-
   const unpredicted = students.filter(s => !s.latestPrediction)
   const predicted = students.filter(s => s.latestPrediction)
-
   const runAll = async () => {
     const targets = unpredicted
     if (!targets.length) { toast('All students already have predictions'); return }
@@ -41,7 +37,6 @@ function PredictContent() {
     fetchStudents()
     setRunning(false)
   }
-
   const runOne = async (s) => {
     try {
       const res = await predict(s.id)
@@ -51,11 +46,9 @@ function PredictContent() {
       toast.error(e?.response?.data?.msg || 'Prediction failed')
     }
   }
-
   return (
     <div className="page-container">
       <PageHeader title="Run Predictions" />
-
       <div className="card mb-4">
         <div className="flex items-center justify-between mb-3">
           <div>
@@ -77,7 +70,6 @@ function PredictContent() {
           </div>
         )}
       </div>
-
       {results.length > 0 && (
         <div className="mb-4">
           <h3 className="text-sm font-semibold text-slate-300 mb-2 flex items-center gap-1"><FiCheckCircle size={14} className="text-emerald-400" /> Results</h3>
@@ -111,7 +103,6 @@ function PredictContent() {
           </div>
         </div>
       )}
-
       {unpredicted.length > 0 && (
         <div className="mb-4">
           <h3 className="text-sm font-semibold text-slate-300 mb-2 flex items-center gap-1"><FiClock size={14} className="text-yellow-400" /> Pending</h3>
@@ -151,7 +142,6 @@ function PredictContent() {
           </div>
         </div>
       )}
-
       {predicted.length > 0 && (
         <div>
           <h3 className="text-sm font-semibold text-slate-300 mb-2 flex items-center gap-1"><FiCheckCircle size={14} className="text-emerald-400" /> Already Predicted</h3>
@@ -188,7 +178,6 @@ function PredictContent() {
     </div>
   )
 }
-
 export default function PredictPage() {
   return <AppLayout><PredictContent /></AppLayout>
 }

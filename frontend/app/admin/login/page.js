@@ -6,14 +6,12 @@ import { FiShield, FiUser, FiLock } from 'react-icons/fi'
 import useAuthStore from '@/stores/authStore'
 import { Spinner } from '@/components/ui'
 import Link from 'next/link'
-
 export default function AdminLoginPage() {
   const [form, setForm] = useState({ accountName: '', password: '' })
   const [loading, setLoading] = useState(false)
   const { adminLogin } = useAuthStore()
   const router = useRouter()
   const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }))
-
   const submit = async () => {
     if (!form.accountName || !form.password) return toast.error('All fields required')
     setLoading(true)
@@ -27,7 +25,6 @@ export default function AdminLoginPage() {
       setLoading(false)
     }
   }
-
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-slate-950">
       <div className="w-full max-w-sm">

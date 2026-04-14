@@ -8,7 +8,6 @@ import usePredictionStore from '@/stores/predictionStore'
 import AppLayout from '@/components/layout/AppLayout'
 import PageHeader from '@/components/layout/PageHeader'
 import { Spinner } from '@/components/ui'
-
 function AddStudentContent() {
   const [form, setForm] = useState({ name: '', rollNo: '', subject: '', attendance: '', im1: '', im2: '', im3: '', assignmentScore: '' })
   const [loading, setLoading] = useState(false)
@@ -16,7 +15,6 @@ function AddStudentContent() {
   const { predict } = usePredictionStore()
   const router = useRouter()
   const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }))
-
   const submit = async () => {
     const { name, rollNo, subject, attendance, im1, im2, im3, assignmentScore } = form
     if (!name || !rollNo || !subject || !attendance || !im1 || !im2 || !im3 || !assignmentScore) return toast.error('All fields are required')
@@ -40,7 +38,6 @@ function AddStudentContent() {
       setLoading(false)
     }
   }
-
   return (
     <div className="page-container">
       <PageHeader title="Add Student" back />
@@ -99,7 +96,6 @@ function AddStudentContent() {
     </div>
   )
 }
-
 export default function AddStudentPage() {
   return <AppLayout><AddStudentContent /></AppLayout>
 }

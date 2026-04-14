@@ -6,10 +6,8 @@ import { useAsync } from '@/hooks'
 import AppLayout from '@/components/layout/AppLayout'
 import PageHeader from '@/components/layout/PageHeader'
 import { Spinner, StatCard } from '@/components/ui'
-
 const GRADE_COLORS = { A: 'bg-emerald-500', B: 'bg-blue-500', C: 'bg-yellow-500', D: 'bg-orange-500', F: 'bg-red-500' }
 const GRADE_TEXT = { A: 'text-emerald-400', B: 'text-blue-400', C: 'text-yellow-400', D: 'text-orange-400', F: 'text-red-400' }
-
 function GradeBar({ grade, count, total }) {
   const pct = total ? Math.round((count / total) * 100) : 0
   return (
@@ -22,33 +20,27 @@ function GradeBar({ grade, count, total }) {
     </div>
   )
 }
-
 function ReportsContent() {
   const { data: report, loading } = useAsync(() => predictionAPI.reportAll(), [])
-
   if (loading) return (
     <div className="page-container">
       <PageHeader title="Reports" />
       <div className="flex justify-center py-12"><Spinner size="lg" /></div>
     </div>
   )
-
   const dist = report?.gradeDistribution || {}
   const risk = report?.riskDistribution || {}
   const total = report?.total || 0
   const grades = ['A', 'B', 'C', 'D', 'F']
-
   return (
     <div className="page-container">
       <PageHeader title="Analytics & Reports" />
-
       <div className="grid grid-cols-4 gap-3 mb-5">
         <StatCard label="Total Predictions" value={total} icon={<FiBarChart2 />} accent="blue" />
         <StatCard label="Avg Score" value={report?.avgScore ? `${report.avgScore}%` : '—'} icon={<FiTrendingUp />} accent="purple" />
         <StatCard label="Avg Attendance" value={report?.avgAttendance ? `${report.avgAttendance}%` : '—'} icon={<FiActivity />} accent="green" />
         <StatCard label="At Risk" value={risk.high || 0} icon={<FiAlertTriangle />} accent="red" sub="high risk students" />
       </div>
-
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div className="card">
           <p className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-4 flex items-center gap-1"><FiBarChart2 size={12} /> Grade Distribution</p>
@@ -60,7 +52,6 @@ function ReportsContent() {
             </div>
           )}
         </div>
-
         <div className="card">
           <p className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-4 flex items-center gap-1"><FiAlertTriangle size={12} /> Risk Distribution</p>
           {total === 0 ? (
@@ -80,7 +71,6 @@ function ReportsContent() {
           )}
         </div>
       </div>
-
       <div className="card">
         <p className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-3">Grade Scale</p>
         <div className="space-y-1.5">
@@ -96,7 +86,6 @@ function ReportsContent() {
     </div>
   )
 }
-
 export default function ReportsPage() {
   return <AppLayout><ReportsContent /></AppLayout>
 }

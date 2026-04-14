@@ -3,17 +3,12 @@ import { FiUsers, FiUser, FiCpu, FiTrendingUp, FiBarChart2 } from 'react-icons/f
 import { adminAPI } from '@/services/api'
 import { useAsync } from '@/hooks'
 import { Spinner, StatCard, Badge } from '@/components/ui'
-
 const GRADE_TEXT = { A: 'text-emerald-400', B: 'text-blue-400', C: 'text-yellow-400', D: 'text-orange-400', F: 'text-red-400' }
-
 export default function AdminDashboardPage() {
   const { data, loading } = useAsync(() => adminAPI.dashboard(), [])
-
   if (loading) return <div className="flex justify-center py-20"><Spinner size="lg" /></div>
-
   const dist = data?.gradeDistribution || {}
   const recent = data?.recentPredictions || []
-
   return (
     <div className="max-w-4xl">
       <div className="mb-6">
@@ -26,7 +21,6 @@ export default function AdminDashboardPage() {
         <StatCard label="Predictions" value={data?.totalPredictions || 0} icon={<FiCpu />} accent="green" />
         <StatCard label="Avg Score" value={data?.avgPredictedScore ? `${data.avgPredictedScore}%` : '—'} icon={<FiTrendingUp />} accent="yellow" />
       </div>
-
       <div className="grid lg:grid-cols-2 gap-6">
         <div className="card">
           <p className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-4 flex items-center gap-1"><FiBarChart2 size={12} /> Grade Distribution</p>
@@ -46,7 +40,6 @@ export default function AdminDashboardPage() {
             </div>
           )}
         </div>
-
         <div className="card">
           <p className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-4">Recent Predictions</p>
           {recent.length === 0 ? (

@@ -7,18 +7,14 @@ import useStudentStore from '@/stores/studentStore'
 import AppLayout from '@/components/layout/AppLayout'
 import PageHeader from '@/components/layout/PageHeader'
 import { Spinner, Empty, Badge } from '@/components/ui'
-
 function StudentsContent() {
   const { students, loading, fetchStudents, removeStudent } = useStudentStore()
   const [q, setQ] = useState('')
   const [deleting, setDeleting] = useState(null)
-
   useEffect(() => { fetchStudents() }, [])
-
   const filtered = students.filter(s =>
     !q || s.name?.toLowerCase().includes(q.toLowerCase()) || s.rollNo?.toLowerCase().includes(q.toLowerCase())
   )
-
   const del = async (id, name) => {
     if (!confirm(`Delete ${name}?`)) return
     setDeleting(id)
@@ -31,7 +27,6 @@ function StudentsContent() {
       setDeleting(null)
     }
   }
-
   return (
     <div className="page-container">
       <PageHeader
@@ -95,7 +90,6 @@ function StudentsContent() {
     </div>
   )
 }
-
 export default function StudentsPage() {
   return <AppLayout><StudentsContent /></AppLayout>
 }

@@ -8,7 +8,6 @@ import usePredictionStore from '@/stores/predictionStore'
 import AppLayout from '@/components/layout/AppLayout'
 import PageHeader from '@/components/layout/PageHeader'
 import { Spinner, Badge, PageLoader } from '@/components/ui'
-
 function GradeBar({ label, value, max = 100, color = 'bg-blue-500' }) {
   const pct = Math.min(100, (value / max) * 100)
   return (
@@ -22,7 +21,6 @@ function GradeBar({ label, value, max = 100, color = 'bg-blue-500' }) {
     </div>
   )
 }
-
 function StudentDetailContent() {
   const { id } = useParams()
   const [student, setStudent] = useState(null)
@@ -31,7 +29,6 @@ function StudentDetailContent() {
   const [adviceLoading, setAdviceLoading] = useState(false)
   const [advice, setAdvice] = useState('')
   const { predict, aiAdvice } = usePredictionStore()
-
   const load = async () => {
     try {
       const res = await studentAPI.get(id)
@@ -39,9 +36,7 @@ function StudentDetailContent() {
     } catch { toast.error('Failed to load student') }
     finally { setLoading(false) }
   }
-
   useEffect(() => { load() }, [id])
-
   const runPredict = async () => {
     setPredicting(true)
     try {
@@ -52,7 +47,6 @@ function StudentDetailContent() {
       toast.error(e?.response?.data?.msg || 'Prediction failed')
     } finally { setPredicting(false) }
   }
-
   const getAdvice = async () => {
     setAdviceLoading(true)
     setAdvice('')
@@ -63,17 +57,13 @@ function StudentDetailContent() {
       setAdvice(e?.response?.data?.msg || 'Failed to get AI advice. Ensure Ollama is running.')
     } finally { setAdviceLoading(false) }
   }
-
   if (loading) return <PageLoader />
   if (!student) return <div className="page-container"><p className="text-slate-500 text-center mt-12">Student not found</p></div>
-
   const p = student.latestPrediction
   const avgInternal = student.avg_internal || (student.internalMarks?.reduce((a, b) => a + b, 0) / 3) || 0
-
   return (
     <div className="page-container">
       <PageHeader title={student.name} back />
-
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div className="card">
           <div className="flex items-start justify-between mb-4">
@@ -101,7 +91,6 @@ function StudentDetailContent() {
             </div>
           )}
         </div>
-
         <div>
           {p ? (
             <div className="card mb-4">
@@ -124,7 +113,6 @@ function StudentDetailContent() {
               </button>
             </div>
           )}
-
           <div className="card">
             <div className="flex items-center justify-between mb-3">
               <p className="text-xs text-slate-500 uppercase tracking-wide font-medium flex items-center gap-1"><FiMessageSquare size={12} /> AI Advisor</p>
@@ -152,7 +140,6 @@ function StudentDetailContent() {
     </div>
   )
 }
-
 export default function StudentDetailPage() {
   return <AppLayout><StudentDetailContent /></AppLayout>
 }

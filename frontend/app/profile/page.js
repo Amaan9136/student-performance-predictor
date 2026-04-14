@@ -5,22 +5,17 @@ import AppLayout from '@/components/layout/AppLayout'
 import PageHeader from '@/components/layout/PageHeader'
 import { Spinner } from '@/components/ui'
 import { useState } from 'react'
-
 function ProfileContent() {
   const { user, logout } = useAuthStore()
   const [loading, setLoading] = useState(false)
-
   const doLogout = async () => {
     setLoading(true)
     await logout()
   }
-
   const joined = user?.createdAt ? new Date(user.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) : '—'
-
   return (
     <div className="page-container">
       <PageHeader title="Profile" />
-
       <div className="grid grid-cols-2 gap-6">
         <div>
           <div className="card mb-4 flex flex-col items-center py-8">
@@ -34,7 +29,6 @@ function ProfileContent() {
             {loading ? <Spinner size="sm" /> : <><FiLogOut size={16} /> Sign Out</>}
           </button>
         </div>
-
         <div className="card space-y-5">
           <p className="text-xs text-slate-500 uppercase tracking-wide font-medium">Account Details</p>
           <div className="flex items-center gap-3">
@@ -78,7 +72,6 @@ function ProfileContent() {
     </div>
   )
 }
-
 export default function ProfilePage() {
   return <AppLayout><ProfileContent /></AppLayout>
 }

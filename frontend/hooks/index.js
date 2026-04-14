@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react'
-
 export function useAsync(fn, deps = []) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -20,7 +19,6 @@ export function useAsync(fn, deps = []) {
   useEffect(() => { refetch() }, [refetch])
   return { data, loading, error, refetch }
 }
-
 export function useAction() {
   const [loading, setLoading] = useState(false)
   const run = useCallback((fn) => async (...args) => {

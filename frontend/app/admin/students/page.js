@@ -5,16 +5,13 @@ import { FiSearch, FiTrash2 } from 'react-icons/fi'
 import { adminAPI } from '@/services/api'
 import { useAsync } from '@/hooks'
 import { Spinner, Empty, Badge } from '@/components/ui'
-
 export default function AdminStudentsPage() {
   const [q, setQ] = useState('')
   const { data: students, loading, refetch } = useAsync(() => adminAPI.students(), [])
   const [deleting, setDeleting] = useState(null)
-
   const filtered = (students || []).filter(s =>
     !q || s.name?.toLowerCase().includes(q.toLowerCase()) || s.rollNo?.toLowerCase().includes(q.toLowerCase()) || s.subject?.toLowerCase().includes(q.toLowerCase())
   )
-
   const del = async (id, name) => {
     if (!confirm(`Delete ${name} and all their predictions?`)) return
     setDeleting(id)
@@ -28,7 +25,6 @@ export default function AdminStudentsPage() {
       setDeleting(null)
     }
   }
-
   return (
     <div className="max-w-6xl">
       <div className="flex items-center justify-between mb-6">

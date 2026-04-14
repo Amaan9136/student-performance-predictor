@@ -5,10 +5,8 @@ import { FiCpu, FiCheckCircle, FiInfo, FiBarChart2, FiRefreshCw } from 'react-ic
 import { adminAPI } from '@/services/api'
 import { Spinner } from '@/components/ui'
 import { useAsync } from '@/hooks'
-
 const GRADE_COLOR = { A: '#34d399', B: '#60a5fa', C: '#facc15', D: '#fb923c', F: '#f87171' }
 const RISK_COLOR = { low: '#34d399', medium: '#facc15', high: '#f87171' }
-
 function MiniBar({ label, value, max, color }) {
   return (
     <div className="flex items-center gap-3 text-xs">
@@ -20,7 +18,6 @@ function MiniBar({ label, value, max, color }) {
     </div>
   )
 }
-
 function ScatterDot({ x, y, color, label }) {
   return (
     <div
@@ -30,7 +27,6 @@ function ScatterDot({ x, y, color, label }) {
     />
   )
 }
-
 function ScatterPlot({ points, colorFn, labelFn, title, xKey = 'attendance', yKey = 'score' }) {
   if (!points?.length) return <p className="text-slate-600 text-xs text-center py-6">No data</p>
   return (
@@ -52,34 +48,27 @@ function ScatterPlot({ points, colorFn, labelFn, title, xKey = 'attendance', yKe
     </div>
   )
 }
-
 function VizSection({ viz, loading: vizLoading, refetch: refetchViz }) {
   const [tab, setTab] = useState('scatter')
   if (vizLoading) return <div className="flex justify-center py-8"><Spinner size="lg" /></div>
   if (!viz) return null
-
   const train = viz.train || []
   const test = viz.test || []
   const preds = viz.predictions || []
-
   const gradeCount = (arr) => arr.reduce((acc, p) => { acc[p.grade || _grade(p.score)] = (acc[p.grade || _grade(p.score)] || 0) + 1; return acc }, {})
   const _grade = s => s >= 75 ? 'A' : s >= 60 ? 'B' : s >= 50 ? 'C' : s >= 40 ? 'D' : 'F'
-
   const trainGrades = gradeCount(train)
   const testGrades = gradeCount(test)
   const predGrades = gradeCount(preds)
   const maxGrade = Math.max(...['A','B','C','D','F'].map(g => Math.max(trainGrades[g]||0, testGrades[g]||0, predGrades[g]||0)), 1)
-
   const avgScore = arr => arr.length ? (arr.reduce((s,p) => s + p.score, 0) / arr.length).toFixed(1) : '—'
   const avgAtt = arr => arr.length ? (arr.reduce((s,p) => s + p.attendance, 0) / arr.length).toFixed(1) : '—'
-
   return (
     <div className="card mt-4">
       <div className="flex items-center justify-between mb-4">
         <p className="text-xs text-slate-500 uppercase tracking-wide font-medium flex items-center gap-1.5"><FiBarChart2 size={12} /> Data Visualisation</p>
         <button onClick={refetchViz} className="text-slate-600 hover:text-slate-400 transition-colors"><FiRefreshCw size={13} /></button>
       </div>
-
       <div className="flex gap-1 mb-4">
         {[['scatter', 'Scatter'], ['grades', 'Grades'], ['stats', 'Stats']].map(([id, label]) => (
           <button key={id} onClick={() => setTab(id)}
@@ -88,7 +77,6 @@ function VizSection({ viz, loading: vizLoading, refetch: refetchViz }) {
           </button>
         ))}
       </div>
-
       {tab === 'scatter' && (
         <div className="space-y-4">
           <div className="flex gap-3 text-[10px] text-slate-500 flex-wrap">
@@ -103,7 +91,6 @@ function VizSection({ viz, loading: vizLoading, refetch: refetchViz }) {
           )}
         </div>
       )}
-
       {tab === 'grades' && (
         <div className="space-y-4">
           <div>
@@ -128,7 +115,6 @@ function VizSection({ viz, loading: vizLoading, refetch: refetchViz }) {
           )}
         </div>
       )}
-
       {tab === 'stats' && (
         <div className="space-y-3">
           {[
@@ -150,12 +136,10 @@ function VizSection({ viz, loading: vizLoading, refetch: refetchViz }) {
     </div>
   )
 }
-
 export default function AdminTrainPage() {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
   const { data: viz, loading: vizLoading, refetch: refetchViz } = useAsync(() => adminAPI.vizData(), [])
-
   const train = async () => {
     setLoading(true)
     setResult(null)
@@ -170,14 +154,12 @@ export default function AdminTrainPage() {
       setLoading(false)
     }
   }
-
   return (
     <div className="max-w-lg">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-white">Train ML Model</h1>
         <p className="text-slate-400 text-sm mt-1">Retrain the prediction model on all available data</p>
       </div>
-
       <div className="card mb-4">
         <div className="flex items-start gap-3 mb-4">
           <div className="w-10 h-10 rounded-xl bg-blue-600/20 flex items-center justify-center shrink-0">
@@ -200,7 +182,6 @@ export default function AdminTrainPage() {
           {loading ? <><Spinner size="sm" /> Training...</> : <><FiCpu size={16} /> Retrain Model</>}
         </button>
       </div>
-
       {result && (
         <div className="card border-emerald-800/50 bg-emerald-950/20">
           <div className="flex items-center gap-2 mb-3">
@@ -219,9 +200,7 @@ export default function AdminTrainPage() {
           </div>
         </div>
       )}
-
       <VizSection viz={viz} loading={vizLoading} refetch={refetchViz} />
-
       <div className="card mt-4 flex items-start gap-3">
         <FiInfo size={16} className="text-slate-500 shrink-0 mt-0.5" />
         <p className="text-slate-500 text-xs leading-relaxed">

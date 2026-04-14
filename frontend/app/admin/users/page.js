@@ -4,15 +4,12 @@ import { FiSearch, FiUser, FiBook, FiCalendar } from 'react-icons/fi'
 import { adminAPI } from '@/services/api'
 import { useAsync } from '@/hooks'
 import { Spinner, Empty } from '@/components/ui'
-
 export default function AdminUsersPage() {
   const [q, setQ] = useState('')
   const { data: users, loading } = useAsync(() => adminAPI.users(), [])
-
   const filtered = (users || []).filter(u =>
     !q || u.accountName?.toLowerCase().includes(q.toLowerCase()) || u.subject?.toLowerCase().includes(q.toLowerCase())
   )
-
   return (
     <div className="max-w-3xl">
       <div className="mb-6">

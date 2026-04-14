@@ -5,19 +5,16 @@ import Link from 'next/link'
 import { FiGrid, FiUsers, FiCpu, FiUser, FiLogOut, FiShield } from 'react-icons/fi'
 import useAuthStore from '@/stores/authStore'
 import { PageLoader } from '@/components/ui'
-
 const navItems = [
   { href: '/admin', label: 'Dashboard', icon: FiGrid, exact: true },
   { href: '/admin/students', label: 'Students', icon: FiUsers },
   { href: '/admin/users', label: 'Faculty', icon: FiUser },
   { href: '/admin/train', label: 'Train Model', icon: FiCpu },
 ]
-
 export default function AdminLayout({ children }) {
   const { user, isAdmin, hasHydrated, fetchMe, logout } = useAuthStore()
   const router = useRouter()
   const path = usePathname()
-
   useEffect(() => {
     if (path === '/admin/login') return
     fetchMe().then(u => {
@@ -25,13 +22,10 @@ export default function AdminLayout({ children }) {
       if (u.role !== 'admin') router.replace('/dashboard')
     })
   }, [])
-
   if (path === '/admin/login') return <>{children}</>
   if (!hasHydrated) return <PageLoader />
   if (!user || !isAdmin) return <PageLoader />
-
   const isActive = (item) => item.exact ? path === item.href : path.startsWith(item.href)
-
   return (
     <div className="sidebar-layout">
       <aside className="sidebar">

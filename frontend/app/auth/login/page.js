@@ -6,7 +6,6 @@ import toast from 'react-hot-toast'
 import { FiUser, FiLock, FiCpu } from 'react-icons/fi'
 import useAuthStore from '@/stores/authStore'
 import { Spinner } from '@/components/ui'
-
 export default function LoginPage() {
   const [form, setForm] = useState({ accountName: '', password: '' })
   const [loading, setLoading] = useState(false)

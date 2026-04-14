@@ -10,23 +10,19 @@ import useStudentStore from '@/stores/studentStore'
 import { PageLoader, StatCard, Badge, Spinner } from '@/components/ui'
 import PageHeader from '@/components/layout/PageHeader'
 import AppLayout from '@/components/layout/AppLayout'
-
 function DashboardContent() {
   const { user } = useAuthStore()
   const { students, fetchStudents } = useStudentStore()
   const { history, fetchHistory } = usePredictionStore()
   const [running, setRunning] = useState(false)
   const router = useRouter()
-
   useEffect(() => {
     fetchStudents()
     fetchHistory()
   }, [])
-
   const atRisk = students.filter(s => s.latestPrediction?.risk === 'high').length
   const avgScore = history.length ? Math.round(history.reduce((a, b) => a + b.score, 0) / history.length) : 0
   const avgAttendance = students.length ? Math.round(students.reduce((a, b) => a + (b.attendance || 0), 0) / students.length) : 0
-
   const runAllPredictions = async () => {
     const unpredicted = students.filter(s => !s.latestPrediction)
     if (!unpredicted.length) { toast('All students already have predictions'); return }
@@ -47,7 +43,6 @@ function DashboardContent() {
       setRunning(false)
     }
   }
-
   return (
     <div className="page-container">
       <PageHeader
@@ -64,12 +59,10 @@ function DashboardContent() {
         <StatCard label="Avg Attendance" value={`${avgAttendance}%`} icon={<FiActivity />} accent="green" />
         <StatCard label="Avg Score" value={avgScore ? `${avgScore}%` : '—'} icon={<FiTrendingUp />} accent="purple" />
       </div>
-
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-sm font-semibold text-slate-300 flex items-center gap-2"><FiClock size={14} /> Recent Predictions</h2>
         <Link href="/predict" className="text-xs text-blue-400 hover:text-blue-300">View all →</Link>
       </div>
-
       {history.length === 0 ? (
         <div className="card text-center py-12">
           <FiCpu size={36} className="text-slate-700 mx-auto mb-3" />
@@ -104,7 +97,6 @@ function DashboardContent() {
           </table>
         </div>
       )}
-
       <div className="mt-6 grid grid-cols-2 gap-4">
         <Link href="/students/add" className="card-sm flex items-center gap-3 hover:border-blue-800 transition-colors cursor-pointer">
           <FiUsers size={20} className="text-blue-400" />
@@ -118,7 +110,6 @@ function DashboardContent() {
     </div>
   )
 }
-
 export default function DashboardPage() {
   return <AppLayout><DashboardContent /></AppLayout>
 }

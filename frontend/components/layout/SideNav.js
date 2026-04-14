@@ -2,7 +2,6 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FiGrid, FiUsers, FiCpu, FiBarChart2, FiUser } from 'react-icons/fi'
-
 const tabs = [
   { href: '/dashboard', icon: FiGrid, label: 'Dashboard' },
   { href: '/students', icon: FiUsers, label: 'Students' },
@@ -10,7 +9,6 @@ const tabs = [
   { href: '/reports', icon: FiBarChart2, label: 'Reports' },
   { href: '/profile', icon: FiUser, label: 'Profile' },
 ]
-
 export default function SideNav() {
   const path = usePathname()
   const isAdmin = path.startsWith('/admin')

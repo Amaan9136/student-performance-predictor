@@ -1,7 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { FiArrowLeft } from 'react-icons/fi'
-
 export default function PageHeader({ title, back, action }) {
   const router = useRouter()
   return (
