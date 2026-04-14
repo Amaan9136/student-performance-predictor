@@ -52,4 +52,9 @@
   .sidebar { width: 240px; min-width: 240px; background: #0a1628; border-right: 1px solid #1e293b; display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 40; }
   .main-with-sidebar { margin-left: 240px; flex: 1; min-height: 100vh; background: #020617; }
   .topbar { background: #0a1628; border-bottom: 1px solid #1e293b; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 30; }
+  .data-table { width: 100%; text-align: left; border-collapse: collapse; font-size: 0.875rem; }
+  .data-table th { padding: 0.75rem 1rem; font-size: 0.75rem; font-weight: 500; color: #64748b; border-bottom: 1px solid #1e293b; white-space: nowrap; }
+  .data-table td { padding: 0.75rem 1rem; border-bottom: 1px solid #1e293b40; vertical-align: middle; }
+  .data-table tr:last-child td { border-bottom: 0; }
+  .data-table tbody tr:hover { background: #1e293b30; }
 }

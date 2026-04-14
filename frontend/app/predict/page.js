@@ -81,24 +81,33 @@ function PredictContent() {
       {results.length > 0 && (
         <div className="mb-4">
           <h3 className="text-sm font-semibold text-slate-300 mb-2 flex items-center gap-1"><FiCheckCircle size={14} className="text-emerald-400" /> Results</h3>
-          <div className="space-y-2">
-            {results.map(r => (
-              <div key={r.id} className="card-sm flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-white">{r.name}</p>
-                  <p className="text-xs text-slate-500">{r.rollNo}</p>
-                </div>
-                {r.ok ? (
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-slate-300">{r.result?.score?.toFixed(1)}%</span>
-                    <Badge type={r.result?.grade}>{r.result?.grade}</Badge>
-                    <Badge type={r.result?.risk}>{r.result?.risk}</Badge>
-                  </div>
-                ) : (
-                  <span className="text-xs text-red-400">Failed</span>
-                )}
-              </div>
-            ))}
+          <div className="card overflow-hidden p-0">
+            <div className="overflow-x-auto">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Roll No</th>
+                    <th>Subject</th>
+                    <th>Score</th>
+                    <th>Grade</th>
+                    <th>Risk</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {results.map(r => (
+                    <tr key={r.id}>
+                      <td className="text-white font-medium">{r.name}</td>
+                      <td className="text-slate-400">{r.rollNo}</td>
+                      <td className="text-slate-400">{r.subject}</td>
+                      <td className="text-slate-300">{r.ok ? `${r.result?.score?.toFixed(1)}%` : <span className="text-red-400 text-xs">Failed</span>}</td>
+                      <td>{r.ok ? <Badge type={r.result?.grade}>{r.result?.grade}</Badge> : '—'}</td>
+                      <td>{r.ok ? <Badge type={r.result?.risk}>{r.result?.risk}</Badge> : '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
@@ -106,18 +115,39 @@ function PredictContent() {
       {unpredicted.length > 0 && (
         <div className="mb-4">
           <h3 className="text-sm font-semibold text-slate-300 mb-2 flex items-center gap-1"><FiClock size={14} className="text-yellow-400" /> Pending</h3>
-          <div className="space-y-2">
-            {unpredicted.map(s => (
-              <div key={s.id} className="card-sm flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-white">{s.name}</p>
-                  <p className="text-xs text-slate-500">{s.rollNo} · {s.subject}</p>
-                </div>
-                <button className="btn-secondary text-xs px-3 py-1.5" onClick={() => runOne(s)}>
-                  <FiCpu size={12} /> Predict
-                </button>
-              </div>
-            ))}
+          <div className="card overflow-hidden p-0">
+            <div className="overflow-x-auto">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Roll No</th>
+                    <th>Subject</th>
+                    <th>Attendance</th>
+                    <th>Avg Internal</th>
+                    <th>Assignment</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {unpredicted.map(s => (
+                    <tr key={s.id}>
+                      <td className="text-white font-medium">{s.name}</td>
+                      <td className="text-slate-400">{s.rollNo}</td>
+                      <td className="text-slate-400">{s.subject}</td>
+                      <td className="text-slate-300">{s.attendance}%</td>
+                      <td className="text-slate-300">{s.avg_internal?.toFixed(1)}</td>
+                      <td className="text-slate-300">{s.assignmentScore}</td>
+                      <td>
+                        <button className="btn-secondary text-xs px-3 py-1.5" onClick={() => runOne(s)}>
+                          <FiCpu size={12} /> Predict
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
@@ -125,19 +155,33 @@ function PredictContent() {
       {predicted.length > 0 && (
         <div>
           <h3 className="text-sm font-semibold text-slate-300 mb-2 flex items-center gap-1"><FiCheckCircle size={14} className="text-emerald-400" /> Already Predicted</h3>
-          <div className="space-y-2">
-            {predicted.map(s => (
-              <div key={s.id} className="card-sm flex items-center justify-between opacity-70">
-                <div>
-                  <p className="text-sm font-medium text-white">{s.name}</p>
-                  <p className="text-xs text-slate-500">{s.rollNo}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-slate-300">{s.latestPrediction?.score?.toFixed(1)}%</span>
-                  <Badge type={s.latestPrediction?.grade}>{s.latestPrediction?.grade}</Badge>
-                </div>
-              </div>
-            ))}
+          <div className="card overflow-hidden p-0">
+            <div className="overflow-x-auto">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Roll No</th>
+                    <th>Subject</th>
+                    <th>Score</th>
+                    <th>Grade</th>
+                    <th>Risk</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {predicted.map(s => (
+                    <tr key={s.id} className="opacity-70">
+                      <td className="text-white font-medium">{s.name}</td>
+                      <td className="text-slate-400">{s.rollNo}</td>
+                      <td className="text-slate-400">{s.subject}</td>
+                      <td className="text-slate-300">{s.latestPrediction?.score?.toFixed(1)}%</td>
+                      <td><Badge type={s.latestPrediction?.grade}>{s.latestPrediction?.grade}</Badge></td>
+                      <td><Badge type={s.latestPrediction?.risk}>{s.latestPrediction?.risk}</Badge></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}

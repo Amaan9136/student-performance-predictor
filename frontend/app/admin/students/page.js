@@ -30,7 +30,7 @@ export default function AdminStudentsPage() {
   }
 
   return (
-    <div className="max-w-4xl">
+    <div className="max-w-6xl">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white">All Students</h1>
@@ -48,28 +48,30 @@ export default function AdminStudentsPage() {
       ) : (
         <div className="card overflow-hidden p-0">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="data-table">
               <thead>
-                <tr className="border-b border-slate-800">
-                  <th className="text-left px-4 py-3 text-xs text-slate-500 font-medium">Name</th>
-                  <th className="text-left px-4 py-3 text-xs text-slate-500 font-medium">Roll No</th>
-                  <th className="text-left px-4 py-3 text-xs text-slate-500 font-medium">Subject</th>
-                  <th className="text-left px-4 py-3 text-xs text-slate-500 font-medium">Att%</th>
-                  <th className="text-left px-4 py-3 text-xs text-slate-500 font-medium">Avg Int</th>
-                  <th className="text-left px-4 py-3 text-xs text-slate-500 font-medium">Prediction</th>
-                  <th className="text-left px-4 py-3 text-xs text-slate-500 font-medium">Faculty</th>
-                  <th className="px-4 py-3"></th>
+                <tr>
+                  <th>Name</th>
+                  <th>Roll No</th>
+                  <th>Subject</th>
+                  <th>Att%</th>
+                  <th>Avg Int</th>
+                  <th>Assignment</th>
+                  <th>Prediction</th>
+                  <th>Faculty</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((s, i) => (
-                  <tr key={s.id} className={`border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors ${i === filtered.length - 1 ? 'border-0' : ''}`}>
-                    <td className="px-4 py-3 text-white font-medium">{s.name}</td>
-                    <td className="px-4 py-3 text-slate-400">{s.rollNo}</td>
-                    <td className="px-4 py-3 text-slate-400">{s.subject}</td>
-                    <td className="px-4 py-3 text-slate-300">{s.attendance}%</td>
-                    <td className="px-4 py-3 text-slate-300">{s.avg_internal?.toFixed(1)}</td>
-                    <td className="px-4 py-3">
+                {filtered.map(s => (
+                  <tr key={s.id}>
+                    <td className="text-white font-medium">{s.name}</td>
+                    <td className="text-slate-400">{s.rollNo}</td>
+                    <td className="text-slate-400">{s.subject}</td>
+                    <td className="text-slate-300">{s.attendance}%</td>
+                    <td className="text-slate-300">{s.avg_internal?.toFixed(1)}</td>
+                    <td className="text-slate-300">{s.assignmentScore}</td>
+                    <td>
                       {s.latestPrediction ? (
                         <div className="flex items-center gap-1">
                           <Badge type={s.latestPrediction.grade}>{s.latestPrediction.grade}</Badge>
@@ -77,8 +79,8 @@ export default function AdminStudentsPage() {
                         </div>
                       ) : <span className="text-xs text-slate-600">—</span>}
                     </td>
-                    <td className="px-4 py-3 text-slate-500 text-xs">{s.createdBy}</td>
-                    <td className="px-4 py-3">
+                    <td className="text-slate-500 text-xs">{s.createdBy}</td>
+                    <td>
                       <button onClick={() => del(s.id, s.name)} disabled={deleting === s.id} className="w-7 h-7 flex items-center justify-center rounded-lg text-slate-600 hover:text-red-400 hover:bg-red-400/10 transition-colors">
                         {deleting === s.id ? <Spinner size="sm" /> : <FiTrash2 size={13} />}
                       </button>

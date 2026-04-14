@@ -74,76 +74,80 @@ function StudentDetailContent() {
     <div className="page-container">
       <PageHeader title={student.name} back />
 
-      <div className="card mb-3">
-        <div className="flex items-start justify-between mb-3">
-          <div>
-            <p className="text-lg font-bold text-white">{student.name}</p>
-            <p className="text-slate-400 text-sm">{student.rollNo} · {student.subject}</p>
-          </div>
-          <button className="btn-secondary text-xs px-3 py-2" onClick={runPredict} disabled={predicting}>
-            {predicting ? <Spinner size="sm" /> : <><FiRefreshCw size={12} /> Predict</>}
-          </button>
-        </div>
-        <div className="space-y-3">
-          <GradeBar label="Attendance" value={student.attendance} color="bg-blue-500" />
-          <GradeBar label="Avg Internal Marks" value={avgInternal.toFixed(1)} color="bg-purple-500" />
-          <GradeBar label="Assignment Score" value={student.assignmentScore} color="bg-emerald-500" />
-        </div>
-        {student.internalMarks && (
-          <div className="flex gap-2 mt-3">
-            {student.internalMarks.map((m, i) => (
-              <div key={i} className="flex-1 bg-slate-800 rounded-lg p-2 text-center">
-                <p className="text-xs text-slate-500">Test {i + 1}</p>
-                <p className="text-sm font-bold text-white">{m}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {p ? (
-        <div className="card mb-3">
-          <p className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-3 flex items-center gap-1"><FiActivity size={12} /> Prediction Result</p>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="text-4xl font-black text-white">{p.score?.toFixed(1)}<span className="text-lg text-slate-400">%</span></div>
-            <div className="flex flex-col gap-1">
-              <Badge type={p.grade}>Grade {p.grade}</Badge>
-              <Badge type={p.risk}>{p.risk} risk</Badge>
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="card">
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <p className="text-lg font-bold text-white">{student.name}</p>
+              <p className="text-slate-400 text-sm">{student.rollNo} · {student.subject}</p>
             </div>
+            <button className="btn-secondary text-xs px-3 py-2" onClick={runPredict} disabled={predicting}>
+              {predicting ? <Spinner size="sm" /> : <><FiRefreshCw size={12} /> Predict</>}
+            </button>
           </div>
-          <GradeBar label="Predicted Score" value={p.score?.toFixed(1)} color={p.score >= 60 ? 'bg-emerald-500' : p.score >= 45 ? 'bg-yellow-500' : 'bg-red-500'} />
+          <div className="space-y-3">
+            <GradeBar label="Attendance" value={student.attendance} color="bg-blue-500" />
+            <GradeBar label="Avg Internal Marks" value={avgInternal.toFixed(1)} color="bg-purple-500" />
+            <GradeBar label="Assignment Score" value={student.assignmentScore} color="bg-emerald-500" />
+          </div>
+          {student.internalMarks && (
+            <div className="flex gap-2 mt-4">
+              {student.internalMarks.map((m, i) => (
+                <div key={i} className="flex-1 bg-slate-800 rounded-lg p-2 text-center">
+                  <p className="text-xs text-slate-500">Test {i + 1}</p>
+                  <p className="text-sm font-bold text-white">{m}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="card mb-3 text-center py-6">
-          <FiCpu size={28} className="text-slate-700 mx-auto mb-2" />
-          <p className="text-slate-500 text-sm mb-3">No prediction yet</p>
-          <button className="btn-primary text-sm" onClick={runPredict} disabled={predicting}>
-            {predicting ? <Spinner size="sm" /> : 'Run Prediction'}
-          </button>
-        </div>
-      )}
 
-      <div className="card">
-        <div className="flex items-center justify-between mb-3">
-          <p className="text-xs text-slate-500 uppercase tracking-wide font-medium flex items-center gap-1"><FiMessageSquare size={12} /> AI Advisor</p>
-          <button className="btn-secondary text-xs px-3 py-1.5" onClick={getAdvice} disabled={adviceLoading || !p}>
-            {adviceLoading ? <Spinner size="sm" /> : 'Get Advice'}
-          </button>
+        <div>
+          {p ? (
+            <div className="card mb-4">
+              <p className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-3 flex items-center gap-1"><FiActivity size={12} /> Prediction Result</p>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="text-4xl font-black text-white">{p.score?.toFixed(1)}<span className="text-lg text-slate-400">%</span></div>
+                <div className="flex flex-col gap-1">
+                  <Badge type={p.grade}>Grade {p.grade}</Badge>
+                  <Badge type={p.risk}>{p.risk} risk</Badge>
+                </div>
+              </div>
+              <GradeBar label="Predicted Score" value={p.score?.toFixed(1)} color={p.score >= 60 ? 'bg-emerald-500' : p.score >= 45 ? 'bg-yellow-500' : 'bg-red-500'} />
+            </div>
+          ) : (
+            <div className="card mb-4 text-center py-6">
+              <FiCpu size={28} className="text-slate-700 mx-auto mb-2" />
+              <p className="text-slate-500 text-sm mb-3">No prediction yet</p>
+              <button className="btn-primary text-sm" onClick={runPredict} disabled={predicting}>
+                {predicting ? <Spinner size="sm" /> : 'Run Prediction'}
+              </button>
+            </div>
+          )}
+
+          <div className="card">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs text-slate-500 uppercase tracking-wide font-medium flex items-center gap-1"><FiMessageSquare size={12} /> AI Advisor</p>
+              <button className="btn-secondary text-xs px-3 py-1.5" onClick={getAdvice} disabled={adviceLoading || !p}>
+                {adviceLoading ? <Spinner size="sm" /> : 'Get Advice'}
+              </button>
+            </div>
+            {!p && <p className="text-slate-600 text-xs">Run a prediction first to get AI advice.</p>}
+            {adviceLoading && (
+              <div className="flex items-center gap-2 text-slate-400 text-sm">
+                <Spinner size="sm" /><span>Asking AI advisor...</span>
+              </div>
+            )}
+            {advice && !adviceLoading && (
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-3">
+                <p className="text-slate-300 text-sm leading-relaxed">{advice}</p>
+              </div>
+            )}
+            {!advice && !adviceLoading && p && (
+              <p className="text-slate-600 text-xs">Click "Get Advice" for personalized AI recommendations.</p>
+            )}
+          </div>
         </div>
-        {!p && <p className="text-slate-600 text-xs">Run a prediction first to get AI advice.</p>}
-        {adviceLoading && (
-          <div className="flex items-center gap-2 text-slate-400 text-sm">
-            <Spinner size="sm" /><span>Asking AI advisor...</span>
-          </div>
-        )}
-        {advice && !adviceLoading && (
-          <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-3">
-            <p className="text-slate-300 text-sm leading-relaxed">{advice}</p>
-          </div>
-        )}
-        {!advice && !adviceLoading && p && (
-          <p className="text-slate-600 text-xs">Click "Get Advice" for personalized AI recommendations.</p>
-        )}
       </div>
     </div>
   )

@@ -42,41 +42,43 @@ function ReportsContent() {
     <div className="page-container">
       <PageHeader title="Analytics & Reports" />
 
-      <div className="grid grid-cols-2 gap-3 mb-5">
+      <div className="grid grid-cols-4 gap-3 mb-5">
         <StatCard label="Total Predictions" value={total} icon={<FiBarChart2 />} accent="blue" />
         <StatCard label="Avg Score" value={report?.avgScore ? `${report.avgScore}%` : '—'} icon={<FiTrendingUp />} accent="purple" />
         <StatCard label="Avg Attendance" value={report?.avgAttendance ? `${report.avgAttendance}%` : '—'} icon={<FiActivity />} accent="green" />
         <StatCard label="At Risk" value={risk.high || 0} icon={<FiAlertTriangle />} accent="red" sub="high risk students" />
       </div>
 
-      <div className="card mb-4">
-        <p className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-4 flex items-center gap-1"><FiBarChart2 size={12} /> Grade Distribution</p>
-        {total === 0 ? (
-          <p className="text-slate-600 text-sm text-center py-4">No predictions yet</p>
-        ) : (
-          <div className="space-y-3">
-            {grades.map(g => <GradeBar key={g} grade={g} count={dist[g] || 0} total={total} />)}
-          </div>
-        )}
-      </div>
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="card">
+          <p className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-4 flex items-center gap-1"><FiBarChart2 size={12} /> Grade Distribution</p>
+          {total === 0 ? (
+            <p className="text-slate-600 text-sm text-center py-4">No predictions yet</p>
+          ) : (
+            <div className="space-y-3">
+              {grades.map(g => <GradeBar key={g} grade={g} count={dist[g] || 0} total={total} />)}
+            </div>
+          )}
+        </div>
 
-      <div className="card mb-4">
-        <p className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-4 flex items-center gap-1"><FiAlertTriangle size={12} /> Risk Distribution</p>
-        {total === 0 ? (
-          <p className="text-slate-600 text-sm text-center py-4">No predictions yet</p>
-        ) : (
-          <div className="space-y-3">
-            {[['low', 'bg-emerald-500', 'text-emerald-400'], ['medium', 'bg-yellow-500', 'text-yellow-400'], ['high', 'bg-red-500', 'text-red-400']].map(([r, bg, text]) => (
-              <div key={r} className="flex items-center gap-3">
-                <span className={`text-sm font-bold w-14 capitalize ${text}`}>{r}</span>
-                <div className="flex-1 h-3 bg-slate-800 rounded-full overflow-hidden">
-                  <div className={`h-full ${bg} rounded-full transition-all duration-700`} style={{ width: `${total ? Math.round(((risk[r] || 0) / total) * 100) : 0}%` }} />
+        <div className="card">
+          <p className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-4 flex items-center gap-1"><FiAlertTriangle size={12} /> Risk Distribution</p>
+          {total === 0 ? (
+            <p className="text-slate-600 text-sm text-center py-4">No predictions yet</p>
+          ) : (
+            <div className="space-y-3">
+              {[['low', 'bg-emerald-500', 'text-emerald-400'], ['medium', 'bg-yellow-500', 'text-yellow-400'], ['high', 'bg-red-500', 'text-red-400']].map(([r, bg, text]) => (
+                <div key={r} className="flex items-center gap-3">
+                  <span className={`text-sm font-bold w-14 capitalize ${text}`}>{r}</span>
+                  <div className="flex-1 h-3 bg-slate-800 rounded-full overflow-hidden">
+                    <div className={`h-full ${bg} rounded-full transition-all duration-700`} style={{ width: `${total ? Math.round(((risk[r] || 0) / total) * 100) : 0}%` }} />
+                  </div>
+                  <span className="text-xs text-slate-400 w-16 text-right">{risk[r] || 0}</span>
                 </div>
-                <span className="text-xs text-slate-400 w-16 text-right">{risk[r] || 0}</span>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="card">
